@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtoPaint", "EtoPaint\EtoPaint\EtoPaint.csproj", "{516C30C5-31A2-4E55-8516-4F4F933CB01D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtoPaint.Gtk", "EtoPaint\EtoPaint.Gtk\EtoPaint.Gtk.csproj", "{2E5E2730-A5CC-470E-A47B-57ACB7C52D7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtoPaint.Mac", "EtoPaint\EtoPaint.Mac\EtoPaint.Mac.csproj", "{0884EF9C-A435-4381-BD23-B392A4654738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtoPaint.Wpf", "EtoPaint\EtoPaint.Wpf\EtoPaint.Wpf.csproj", "{AB336826-99E0-49DC-BC1F-BC2C390F46B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{516C30C5-31A2-4E55-8516-4F4F933CB01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{516C30C5-31A2-4E55-8516-4F4F933CB01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{516C30C5-31A2-4E55-8516-4F4F933CB01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{516C30C5-31A2-4E55-8516-4F4F933CB01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5E2730-A5CC-470E-A47B-57ACB7C52D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5E2730-A5CC-470E-A47B-57ACB7C52D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5E2730-A5CC-470E-A47B-57ACB7C52D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5E2730-A5CC-470E-A47B-57ACB7C52D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0884EF9C-A435-4381-BD23-B392A4654738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0884EF9C-A435-4381-BD23-B392A4654738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0884EF9C-A435-4381-BD23-B392A4654738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0884EF9C-A435-4381-BD23-B392A4654738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB336826-99E0-49DC-BC1F-BC2C390F46B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB336826-99E0-49DC-BC1F-BC2C390F46B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB336826-99E0-49DC-BC1F-BC2C390F46B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB336826-99E0-49DC-BC1F-BC2C390F46B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D043B838-540E-4A66-94E6-9B75FDB9F17C}
+	EndGlobalSection
+EndGlobal
