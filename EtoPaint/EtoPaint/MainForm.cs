@@ -1,57 +1,96 @@
-using System;
-using Eto.Forms;
 using Eto.Drawing;
+using Eto.Forms;
 
 namespace EtoPaint
 {
 	public partial class MainForm : Form
 	{
+		private Drawable Canvas;
+
 		public MainForm()
 		{
-			Title = "My Eto Form";
-			ClientSize = new Size(400, 350);
+			Title = "EtoPaint";
+			ClientSize = new Size(640, 480);
 
-			Content = new StackLayout
-			{
-				Padding = 10,
-				Items =
-				{
-					"Hello World!",
-					// add more controls here
-				}
-			};
-
-			// create a few commands that can be used for the menu and toolbar
-			var clickMe = new Command { MenuText = "Click Me!", ToolBarText = "Click Me!" };
-			clickMe.Executed += (sender, e) => MessageBox.Show(this, "I was clicked!");
-
-			var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
-			quitCommand.Executed += (sender, e) => Application.Instance.Quit();
-
-			var aboutCommand = new Command { MenuText = "About..." };
-			aboutCommand.Executed += (sender, e) => new AboutDialog().ShowDialog(this);
-
-			// create menu
+			// menu
 			Menu = new MenuBar
 			{
 				Items =
 				{
-					// File submenu
-					new ButtonMenuItem { Text = "&File", Items = { clickMe } },
-					// new ButtonMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
-					// new ButtonMenuItem { Text = "&View", Items = { /* commands/items */ } },
-				},
-				ApplicationItems =
-				{
-					// application (OS X) or file menu (others)
-					new ButtonMenuItem { Text = "&Preferences..." },
-				},
-				QuitItem = quitCommand,
-				AboutItem = aboutCommand
+					// menu/file
+					new ButtonMenuItem
+					{
+						Text = "&File",
+						Items =
+						{
+							// menu/file/new
+							new Command((s, e) => MessageBox.Show(this, "hello"))
+							{
+								MenuText = "&New",
+								Shortcut = Keys.F2
+							},
+
+							// menu/file/about
+							new ButtonMenuItem((s, e) =>
+								new Dialog()
+								{
+									Content = new Label
+									{
+										Text = "This is just a test app to see the posibilities and performance of Eto.Forms.",
+									},
+									ClientSize = new Size(250, 100),
+									Padding = new Padding(15)
+								}.ShowModal(this)
+							)
+							{
+								Text = "&About..."
+							},
+
+							// menu/file/quit
+							new Command((s, e) => Application.Instance.Quit())
+							{
+								MenuText = "&Quit",
+								Shortcut = Application.Instance.CommonModifier | Keys.Q
+							}
+						}
+					}
+				}
 			};
 
-			// create toolbar			
-			ToolBar = new ToolBar { Items = { clickMe } };
+			Canvas = new Drawable();
+
+			Content = new TableLayout()
+			{
+				Rows =
+				{
+					new TableRow()
+					{
+						ScaleHeight = true,
+						Cells =
+						{
+							Canvas
+						}
+					},
+					new TableRow()
+					{
+						Cells =
+						{
+							new StackLayout
+							{
+								Orientation = Orientation.Horizontal,
+								HorizontalContentAlignment = HorizontalAlignment.Stretch,
+								Items =
+								{
+									new Button() { Text = "Button 1" },
+									new Button() { Text = "Button 2" },
+									new Button() { Text = "Button 3" },
+									new Button() { Text = "Button 4" }
+								}
+							}
+						}
+					}
+				}
+			};
 		}
 	}
 }
