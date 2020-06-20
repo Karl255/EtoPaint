@@ -8,4 +8,10 @@
     <PackageReference Include="Eto.Forms" Version="2.5.0" />
   </ItemGroup>
   
+  <ItemGroup>
+    <None Update="Blank.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
 </Project>

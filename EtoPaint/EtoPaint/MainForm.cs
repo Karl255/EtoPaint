@@ -1,16 +1,24 @@
+﻿using Eto;
 using Eto.Drawing;
 using Eto.Forms;
+using System;
+using System.IO;
+using System.Timers;
 
 namespace EtoPaint
 {
 	public partial class MainForm : Form
 	{
-		private Drawable Canvas;
+		private ImageView Img;
+		private Bitmap Bmp;
+		private readonly byte[] BlankBuffer;
+		private byte[] Buffer;
 
 		public MainForm()
 		{
 			Title = "EtoPaint";
-			ClientSize = new Size(640, 480);
+
+			BlankBuffer = File.ReadAllBytes("Blank.bmp");
 
 			// menu
 			Menu = new MenuBar
@@ -24,11 +32,10 @@ namespace EtoPaint
 						Items =
 						{
 							// menu/file/new
-							new Command((s, e) => MessageBox.Show(this, "hello"))
-							{
-								MenuText = "&New",
-								Shortcut = Keys.F2
-							},
+							new Command((s, e) => {
+								Buffer = (byte[])BlankBuffer.Clone();
+								Repaint();
+							}) { MenuText = "New", Shortcut = Keys.F2 },
 
 							// menu/file/about
 							new ButtonMenuItem((s, e) =>
@@ -57,40 +64,44 @@ namespace EtoPaint
 				}
 			};
 
-			Canvas = new Drawable();
+			Buffer = (byte[])BlankBuffer.Clone();
+			Bmp = new Bitmap(Buffer);
+			Img = new ImageView { Image = Bmp, Size = new Size(256, 240) };
 
-			Content = new TableLayout()
+			Content = Img;
+
+			Img.MouseMove += (s, e) =>
 			{
-				Rows =
-				{
-					new TableRow()
-					{
-						ScaleHeight = true,
-						Cells =
-						{
-							Canvas
-						}
-					},
-					new TableRow()
-					{
-						Cells =
-						{
-							new StackLayout
-							{
-								Orientation = Orientation.Horizontal,
-								HorizontalContentAlignment = HorizontalAlignment.Stretch,
-								Items =
-								{
-									new Button() { Text = "Button 1" },
-									new Button() { Text = "Button 2" },
-									new Button() { Text = "Button 3" },
-									new Button() { Text = "Button 4" }
-								}
-							}
-						}
-					}
-				}
+				int x = (int)e.Location.X;
+				int y = 239 - (int)e.Location.Y;
+
+				if (e.Buttons.HasFlag(MouseButtons.Primary) && x >= 0 && x <= 255 && y >= 0 && y <= 239)
+					Draw(x, y);
 			};
+
+			Closing += (s, e) =>
+			{
+				Bmp.Dispose();
+			};
+		}
+
+		private void Draw(int x, int y)
+		{
+			int start = Buffer[0x0A];
+
+			for (int c = 0; c < 3; c++)
+			{
+				Buffer[start + (y * 256 + x) * 3 + c] = 255;
+			}
+
+			Repaint();
+		}
+
+		private void Repaint()
+		{
+			Bmp.Dispose();
+			Bmp = new Bitmap(Buffer);
+			Img.Image = Bmp;
 		}
 	}
 }
