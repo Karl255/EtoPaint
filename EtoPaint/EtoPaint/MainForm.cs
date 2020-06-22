@@ -66,10 +66,9 @@ namespace EtoPaint
 
 			Buffer = (byte[])BlankBuffer.Clone();
 			Bmp = new Bitmap(Buffer);
-			Img = new ImageView { Image = Bmp, Size = new Size(256, 240) };
+			Content = Img = new ImageView { Image = Bmp, Size = new Size(256, 240) };
 
-			Content = Img;
-
+			//due to a bug, this won't work on linux (Eto issues #1730 on github)
 			Img.MouseMove += (s, e) =>
 			{
 				int x = (int)e.Location.X;
