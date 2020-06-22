@@ -1,9 +1,7 @@
-﻿using Eto;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
 using System;
 using System.IO;
-using System.Timers;
 
 namespace EtoPaint
 {
@@ -14,6 +12,7 @@ namespace EtoPaint
 		private readonly byte[] BlankBuffer;
 		private byte[] Buffer;
 		private Color PaintColor = Color.FromRgb(0xffffff);
+		private UITimer Timer;
 
 		public MainForm()
 		{
@@ -62,18 +61,24 @@ namespace EtoPaint
 							}
 						}
 					},
+
 					new ButtonMenuItem((s, e) =>
 					{
 						var d = new ColorDialog { Color = PaintColor, AllowAlpha = false };
 						d.ShowDialog(this);
 						PaintColor = d.Color;
-					}) { Text = "Change color"}
+					}) { Text = "Change color"},
+
+					new ButtonMenuItem((s, e) => Timer.Start()) { Text = "Start" },
+					new ButtonMenuItem((s, e) => Timer.Stop()) { Text = "Stop" }
 				}
 			};
 
 			Buffer = (byte[])BlankBuffer.Clone();
 			Bmp = new Bitmap(Buffer);
 			Content = Img = new ImageView { Image = Bmp, Size = new Size(256, 240) };
+
+			Timer = new UITimer((s, e) => DrawRandom()) { Interval = 0.016667 };
 
 			//due to a bug, this won't work on linux (Eto issues #1730 on github)
 			Img.MouseMove += (s, e) =>
@@ -82,16 +87,17 @@ namespace EtoPaint
 				int y = 239 - (int)e.Location.Y;
 
 				if (e.Buttons.HasFlag(MouseButtons.Primary) && x >= 0 && x <= 255 && y >= 0 && y <= 239)
-					Draw(x, y);
+					DrawPixel(x, y);
 			};
 
 			Closing += (s, e) =>
 			{
 				Bmp.Dispose();
+				Timer.Dispose();
 			};
 		}
 
-		private void Draw(int x, int y)
+		private void DrawPixel(int x, int y)
 		{
 			int start = Buffer[0x0A];
 
@@ -107,6 +113,24 @@ namespace EtoPaint
 			Bmp.Dispose();
 			Bmp = new Bitmap(Buffer);
 			Img.Image = Bmp;
+		}
+
+		private void DrawRandom()
+		{
+			int start = Buffer[0x0A];
+			var rand = new Random();
+
+			for (int y = 0; y < 240; y++)
+			{
+				for (int x = 0; x < 256; x++)
+				{
+					Buffer[start + (y * 256 + x) * 3 + 0] = (byte)rand.Next();
+					Buffer[start + (y * 256 + x) * 3 + 1] = (byte)rand.Next();
+					Buffer[start + (y * 256 + x) * 3 + 2] = (byte)rand.Next();
+				}
+			}
+
+			Repaint();
 		}
 	}
 }
