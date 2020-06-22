@@ -13,6 +13,7 @@ namespace EtoPaint
 		private Bitmap Bmp;
 		private readonly byte[] BlankBuffer;
 		private byte[] Buffer;
+		private Color PaintColor = Color.FromRgb(0xffffff);
 
 		public MainForm()
 		{
@@ -60,7 +61,13 @@ namespace EtoPaint
 								Shortcut = Application.Instance.CommonModifier | Keys.Q
 							}
 						}
-					}
+					},
+					new ButtonMenuItem((s, e) =>
+					{
+						var d = new ColorDialog { Color = PaintColor, AllowAlpha = false };
+						d.ShowDialog(this);
+						PaintColor = d.Color;
+					}) { Text = "Change color"}
 				}
 			};
 
@@ -88,10 +95,9 @@ namespace EtoPaint
 		{
 			int start = Buffer[0x0A];
 
-			for (int c = 0; c < 3; c++)
-			{
-				Buffer[start + (y * 256 + x) * 3 + c] = 255;
-			}
+			Buffer[start + (y * 256 + x) * 3 + 0] = (byte)PaintColor.Bb;
+			Buffer[start + (y * 256 + x) * 3 + 1] = (byte)PaintColor.Gb;
+			Buffer[start + (y * 256 + x) * 3 + 2] = (byte)PaintColor.Rb;
 
 			Repaint();
 		}
